@@ -1,0 +1,5 @@
+{
+  "editor.formatOnSave": true,
+  "dart.enableCompletionCommitCharacters": true,
+  "dart.triggerSignatureHelpAutomatically": true
+}
