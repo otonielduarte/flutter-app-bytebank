@@ -27,49 +27,48 @@ class FormTransfer extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _accountController,
-              style: TextStyle(
-                fontSize: 18.5,
-              ),
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: 'Número da conta',
-                hintText: '00000',
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _valueController,
-              style: TextStyle(
-                fontSize: 18.5,
-              ),
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                icon: Icon(Icons.monetization_on),
-                labelText: 'Valor da transferência',
-                hintText: '0.00',
-              ),
-            ),
-          ),
+          CustomTextField(_accountController, 'Número da conta', '0000', null),
+          CustomTextField(_valueController, 'Valor da transferência', '00.00', Icons.monetization_on),
           ElevatedButton(
             child: Text('Cadastrar'),
             onPressed: () {
-              debugPrint('cadastro');
               final accountNumber = int.tryParse(_accountController.text);
               final value = double.tryParse(_valueController.text);
               if (accountNumber != null && value != null) {
                 final t = Transfer(value, accountNumber);
-
                 debugPrint(t.toString());
               }
             },
           )
         ],
+      ),
+    );
+  }
+}
+
+class CustomTextField extends StatelessWidget {
+  final IconData icon;
+  final TextEditingController textController;
+  final String label;
+  final String placeholder;
+
+  CustomTextField(this.textController, this.label, this.placeholder, this.icon);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        controller: textController,
+        style: TextStyle(
+          fontSize: 18.5,
+        ),
+        decoration: InputDecoration(
+          icon: icon != null ? Icon(icon) : null,
+          labelText: label,
+          hintText: placeholder,
+        ),
+        keyboardType: TextInputType.number,
       ),
     );
   }
