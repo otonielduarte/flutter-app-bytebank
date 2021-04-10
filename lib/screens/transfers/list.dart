@@ -1,19 +1,12 @@
+import 'package:bytebank/models/account_info.dart';
 import 'package:bytebank/models/transfer.dart';
 import 'package:bytebank/screens/transfers/form.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _titleAppName = "Transferências";
 
-class TransferList extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return ListTransferListState();
-  }
-}
-
-class ListTransferListState extends State<TransferList> {
-  final List<Transfer> _listTransfer = [];
-
+class TransferList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +14,9 @@ class ListTransferListState extends State<TransferList> {
         title: Text(_titleAppName),
       ),
       body: ListView.builder(
-        itemCount: _listTransfer.length,
-        itemBuilder: (context, index) => CardItem(_listTransfer[index]),
+        itemCount: context.watch<AccountInfo>().listTransfer.length,
+        itemBuilder: (context, index) =>
+            CardItem(context.watch<AccountInfo>().listTransfer[index]),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -31,19 +25,11 @@ class ListTransferListState extends State<TransferList> {
             MaterialPageRoute(
               builder: (context) => FormTransfer(),
             ),
-          ).then(
-            (formTransfer) => _handleNewTransfer(formTransfer),
           );
         },
         child: Icon(Icons.add),
       ),
     );
-  }
-
-  void _handleNewTransfer(formTransfer) {
-    if (formTransfer != null) {
-      setState(() => _listTransfer.add(formTransfer));
-    }
   }
 }
 

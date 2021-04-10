@@ -1,6 +1,7 @@
 import 'package:bytebank/components/custom_input.dart';
-import 'package:bytebank/models/transfer.dart';
+import 'package:bytebank/models/account_info.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const _titleAppBar = "Criar nova transferência";
 const _labelAccount = "Criar nova transferência";
@@ -9,14 +10,7 @@ const _placeHolderAccount = "0000";
 const _placeHolderValue = "00.00";
 const _btnText = "Cadastrar";
 
-class FormTransfer extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return FormTransferState();
-  }
-}
-
-class FormTransferState extends State<FormTransfer> {
+class FormTransfer extends StatelessWidget {
   final TextEditingController _accountController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
 
@@ -50,12 +44,12 @@ class FormTransferState extends State<FormTransfer> {
     );
   }
 
-  void _handlePress(context) {
+  void _handlePress(BuildContext context) {
     final accountNumber = int.tryParse(_accountController.text);
     final value = double.tryParse(_valueController.text);
     if (accountNumber != null && value != null) {
-      final transfer = Transfer(value: value, accountNumber: accountNumber);
-      Navigator.pop(context, transfer);
+      context.read<AccountInfo>().doTransfer(value, accountNumber);
+      Navigator.pop(context);
     }
   }
 }
